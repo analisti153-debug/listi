@@ -1,0 +1,8 @@
+$kind: http-request
+url: "{{baseUrl}}/api/todos/6a986eeb9936b3f4511882cb"
+method: GET
+auth:
+  type: bearer
+  credentials:
+    token: "{{token}}"
+order: 4489576656845637

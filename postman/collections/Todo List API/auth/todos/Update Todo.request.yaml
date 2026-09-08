@@ -1,0 +1,17 @@
+$kind: http-request
+url: "{{baseUrl}}/api/todos/6a986eeb9936b3f4511882cb"
+method: PUT
+body:
+  type: json
+  content: "{\r
+
+    \  \"title\": \"Tes Swagger (Revisi 1)\",\r
+
+    \  \"completed\": true\r
+
+    }"
+auth:
+  type: bearer
+  credentials:
+    token: "{{token}}"
+order: 4494861780197365

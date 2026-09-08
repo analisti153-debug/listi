@@ -1,0 +1,8 @@
+name: Todo API - local
+values:
+  - key: baseUrl
+    value: ''
+  - key: token
+    value: ''
+  - key: apiKey
+    value: ''

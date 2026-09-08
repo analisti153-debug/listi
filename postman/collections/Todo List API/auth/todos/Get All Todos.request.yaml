@@ -1,0 +1,12 @@
+$kind: http-request
+url: "{{baseUrl}}/api/todos?page=1&limit=5&completed=false"
+method: GET
+queryParams:
+  page: "1"
+  limit: "5"
+  completed: "false"
+auth:
+  type: bearer
+  credentials:
+    token: "{{token}}"
+order: 4476217346378635

@@ -1,0 +1,13 @@
+$kind: http-request
+url: "{{baseUrl}}/api/todos"
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \  \"title\": \"Belajar Postman API\"\r
+
+    }"
+auth:
+  type: noauth
+order: 2212827944055518

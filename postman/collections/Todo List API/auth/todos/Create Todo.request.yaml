@@ -1,0 +1,17 @@
+$kind: http-request
+url: "{{baseUrl}}/api/todos"
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \  \"title\": \"Tes Swagger\",\r
+
+    \  \"description\": \"Praktik controller-service-model\"\r
+
+    }"
+auth:
+  type: bearer
+  credentials:
+    token: "{{token}}"
+order: 3716005642519412
