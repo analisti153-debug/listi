@@ -1,18 +1,19 @@
 const mongoose = require("mongoose");
 
-async function connectDB() {
-  try {
-    const uri = process.env.MONGODB_URI;
-    if (!uri) {
-      throw new Error("MONGODB_URI is not defined in .env file");
-    }
-
-    await mongoose.connect(uri);
-    console.log("MongoDB connected successfully");
-  } catch (error) {
-    console.error("MongoDB connection failed:", error.message);
-    process.exit(1);
+const connectDB = async () => {
+  // 1 = connected, 2 = connecting
+  if (mongoose.connection.readyState >= 1) {
+    return;
   }
-}
+
+  try {
+    const db = await mongoose.connect(process.env.MONGODB_URI);
+    console.log("MongoDB Connected");
+    return db;
+  } catch (error) {
+    console.error("MongoDB Connection Failed:", error);
+    throw error;
+  }
+};
 
 module.exports = connectDB;
