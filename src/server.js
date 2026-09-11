@@ -1,17 +1,17 @@
-require("dotenv").config();
+const express = require('express');
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger.json'); // Pastikan path file swagger.json kamu benar
 
-const app = require("./app");
-const connectDB = require("./config/db");
+const app = express();
 
-const PORT = process.env.PORT || 3000;
+// URL CDN untuk Asset Swagger UI
+const CSS_URL = "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.0.0/swagger-ui.min.css";
 
-async function startServer() {
-  await connectDB();
+// Setup Swagger UI dengan customCssUrl
+app.use(
+  '/api-docs',
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerDocument, { customCssUrl: CSS_URL })
+);
 
-  app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-  console.log(`Environment: ${process.env.NODE_ENV}`);
-});
-}
-
-startServer();
+module.exports = app; // Sangat penting untuk Vercel Export
