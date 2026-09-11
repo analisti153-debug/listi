@@ -6,4 +6,4 @@ const connectDB = require("../src/config/db");
 connectDB();
 
 // Export aplikasi Express sebagai Vercel Serverless Function
-module.exports = app;s
+module.exports = app;
