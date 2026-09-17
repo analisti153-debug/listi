@@ -13,7 +13,7 @@ const options = {
 
     servers: [
       {
-        url: "http://localhost:3000",
+        url: "https://listi-rho.vercel.app",
         description: "Local development server",
       },
     ],

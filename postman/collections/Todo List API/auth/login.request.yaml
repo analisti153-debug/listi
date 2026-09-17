@@ -1,11 +1,13 @@
 $kind: http-request
-url: "{{baseUrl}}/api/todos"
+url: http://localhost:3000/api/auth/login
 method: POST
 body:
   type: json
   content: "{\r
 
-    \  \"title\": \"Belajar Postman API\"\r
+    \  \"email\": \"user@example.com\",\r
+
+    \  \"password\": \"password123\"\r
 
     }"
 auth:

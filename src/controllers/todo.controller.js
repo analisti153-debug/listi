@@ -4,12 +4,14 @@ const catchAsync = require("../utils/catchAsync");
 
 const createTodo = catchAsync(async (req, res, next) => {
   const { title, description } = req.body;
-  const userId = req.user._id || req.user.id; // Ambil ID user
+
+  const userId = req.user._id || req.user.id;
 
   const todo = await todoService.createTodo({
     title,
     description,
     owner: userId,
+    userId: userId,
   });
 
   res.status(201).json({
@@ -20,10 +22,25 @@ const createTodo = catchAsync(async (req, res, next) => {
 });
 
 const getAllTodos = catchAsync(async (req, res, next) => {
-  const { page, limit, completed, sortBy, order } = req.query;
-  const queryOptions = { page, limit, completed, sortBy, order };
+  const {
+    page,
+    limit,
+    completed,
+    sortBy,
+    order,
+    search,
+  } = req.query;
 
-  const userId = req.user._id || req.user.id; // Ambil ID user
+  const queryOptions = {
+    page,
+    limit,
+    completed,
+    sortBy,
+    order,
+    search,
+  };
+
+  const userId = req.user._id || req.user.id;
 
   const result =
     req.user.role === "admin"
@@ -40,17 +57,26 @@ const getAllTodos = catchAsync(async (req, res, next) => {
 
 const getTodoById = catchAsync(async (req, res, next) => {
   const { id } = req.params;
+
   const todo = await todoService.getTodoById(id);
 
   if (!todo) {
     return next(new AppError("Todo not found", 404));
   }
 
-  const ownerId = todo.owner?._id ? todo.owner._id.toString() : todo.owner?.toString();
+  const ownerId = todo.owner?._id
+    ? todo.owner._id.toString()
+    : todo.owner?.toString();
+
   const userId = (req.user._id || req.user.id).toString();
 
   if (ownerId !== userId && req.user.role !== "admin") {
-    return next(new AppError("You do not have permission to access this todo", 403));
+    return next(
+      new AppError(
+        "You do not have permission to access this todo",
+        403
+      )
+    );
   }
 
   res.status(200).json({
@@ -62,7 +88,13 @@ const getTodoById = catchAsync(async (req, res, next) => {
 
 const updateTodo = catchAsync(async (req, res, next) => {
   const { id } = req.params;
-  const { title, description, completed } = req.body;
+
+  const {
+    title,
+    description,
+    completed,
+    archived,
+  } = req.body;
 
   const existingTodo = await todoService.getTodoById(id);
 
@@ -70,14 +102,28 @@ const updateTodo = catchAsync(async (req, res, next) => {
     return next(new AppError("Todo not found", 404));
   }
 
-  const ownerId = existingTodo.owner?._id ? existingTodo.owner._id.toString() : existingTodo.owner?.toString();
+  const ownerId = existingTodo.owner?._id
+    ? existingTodo.owner._id.toString()
+    : existingTodo.owner?.toString();
+
   const userId = (req.user._id || req.user.id).toString();
 
   if (ownerId !== userId && req.user.role !== "admin") {
-    return next(new AppError("You do not have permission to update this todo", 403));
+    return next(
+      new AppError(
+        "You do not have permission to update this todo",
+        403
+      )
+    );
   }
 
-  const updatedTodo = await todoService.updateTodo(id, { title, description, completed });
+  const updatedTodo = await todoService.updateTodo(id, {
+    title,
+    description,
+    completed,
+    archived,
+    userId: userId,
+  });
 
   res.status(200).json({
     success: true,
@@ -95,14 +141,22 @@ const deleteTodo = catchAsync(async (req, res, next) => {
     return next(new AppError("Todo not found", 404));
   }
 
-  const ownerId = existingTodo.owner?._id ? existingTodo.owner._id.toString() : existingTodo.owner?.toString();
+  const ownerId = existingTodo.owner?._id
+    ? existingTodo.owner._id.toString()
+    : existingTodo.owner?.toString();
+
   const userId = (req.user._id || req.user.id).toString();
 
   if (ownerId !== userId && req.user.role !== "admin") {
-    return next(new AppError("You do not have permission to delete this todo", 403));
+    return next(
+      new AppError(
+        "You do not have permission to delete this todo",
+        403
+      )
+    );
   }
 
-  await todoService.deleteTodo(id);
+  await todoService.deleteTodo(id, userId);
 
   res.status(200).json({
     success: true,
