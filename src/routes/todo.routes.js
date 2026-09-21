@@ -1,17 +1,19 @@
 const express = require("express");
 const router = express.Router();
+
 const todoController = require("../controllers/todo.controller");
 const { protect } = require("../middlewares/auth.middleware");
 const validate = require("../middlewares/validate.middleware");
+
 const {
   createTodoRules,
   updateTodoRules,
   getTodoByIdRules,
   getAllTodosRules,
 } = require("../validators/todo.validator");
- 
+
 router.use(protect);
- 
+
 /**
  * @swagger
  * /api/todos:
@@ -42,8 +44,12 @@ router.use(protect);
  *             schema:
  *               type: object
  *               properties:
- *                 success: { type: boolean, example: true }
- *                 message: { type: string, example: Todo created successfully }
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: Todo created successfully
  *                 data:
  *                   $ref: '#/components/schemas/Todo'
  *       400:
@@ -52,12 +58,12 @@ router.use(protect);
  *         description: Belum login / token tidak valid
  */
 router.post("/", createTodoRules, validate, todoController.createTodo);
- 
+
 /**
  * @swagger
  * /api/todos:
  *   get:
- *     summary: Mengambil daftar todo milik user yang sedang login (dengan pagination)
+ *     summary: Mengambil daftar todo milik user yang sedang login (dengan pagination dan search)
  *     tags: [Todos]
  *     security:
  *       - bearerAuth: []
@@ -68,6 +74,8 @@ router.post("/", createTodoRules, validate, todoController.createTodo);
  *           type: integer
  *           minimum: 1
  *         description: Nomor halaman
+ *         example: 1
+ *
  *       - in: query
  *         name: limit
  *         schema:
@@ -75,23 +83,38 @@ router.post("/", createTodoRules, validate, todoController.createTodo);
  *           minimum: 1
  *           maximum: 100
  *         description: Jumlah data per halaman
+ *         example: 10
+ *
  *       - in: query
  *         name: completed
  *         schema:
  *           type: boolean
  *         description: Filter berdasarkan status selesai
+ *         example: false
+ *
  *       - in: query
  *         name: sortBy
  *         schema:
  *           type: string
  *           enum: [createdAt, title, completed]
  *         description: Field yang dipakai untuk mengurutkan data
+ *         example: createdAt
+ *
  *       - in: query
  *         name: order
  *         schema:
  *           type: string
  *           enum: [asc, desc]
  *         description: Arah pengurutan data
+ *         example: desc
+ *
+ *       - in: query
+ *         name: search
+ *         schema:
+ *           type: string
+ *         description: Mencari todo berdasarkan title atau description
+ *         example: belajar
+ *
  *     responses:
  *       200:
  *         description: Daftar todo berhasil diambil
@@ -100,8 +123,12 @@ router.post("/", createTodoRules, validate, todoController.createTodo);
  *             schema:
  *               type: object
  *               properties:
- *                 success: { type: boolean, example: true }
- *                 message: { type: string, example: Todos retrieved successfully }
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: Todos retrieved successfully
  *                 data:
  *                   type: array
  *                   items:
@@ -109,15 +136,23 @@ router.post("/", createTodoRules, validate, todoController.createTodo);
  *                 pagination:
  *                   type: object
  *                   properties:
- *                     currentPage: { type: integer, example: 1 }
- *                     totalPages: { type: integer, example: 3 }
- *                     totalItems: { type: integer, example: 25 }
- *                     itemsPerPage: { type: integer, example: 10 }
+ *                     currentPage:
+ *                       type: integer
+ *                       example: 1
+ *                     totalPages:
+ *                       type: integer
+ *                       example: 3
+ *                     totalItems:
+ *                       type: integer
+ *                       example: 25
+ *                     limit:
+ *                       type: integer
+ *                       example: 10
  *       401:
  *         description: Belum login / token tidak valid
  */
 router.get("/", getAllTodosRules, validate, todoController.getAllTodos);
- 
+
 /**
  * @swagger
  * /api/todos/{id}:
@@ -141,8 +176,12 @@ router.get("/", getAllTodosRules, validate, todoController.getAllTodos);
  *             schema:
  *               type: object
  *               properties:
- *                 success: { type: boolean, example: true }
- *                 message: { type: string, example: Todo retrieved successfully }
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: Todo retrieved successfully
  *                 data:
  *                   $ref: '#/components/schemas/Todo'
  *       400:
@@ -155,7 +194,7 @@ router.get("/", getAllTodosRules, validate, todoController.getAllTodos);
  *         description: Todo tidak ditemukan
  */
 router.get("/:id", getTodoByIdRules, validate, todoController.getTodoById);
- 
+
 /**
  * @swagger
  * /api/todos/{id}:
@@ -187,6 +226,9 @@ router.get("/:id", getTodoByIdRules, validate, todoController.getTodoById);
  *               completed:
  *                 type: boolean
  *                 example: true
+ *               archived:
+ *                 type: boolean
+ *                 example: false
  *     responses:
  *       200:
  *         description: Todo berhasil diupdate
@@ -195,8 +237,12 @@ router.get("/:id", getTodoByIdRules, validate, todoController.getTodoById);
  *             schema:
  *               type: object
  *               properties:
- *                 success: { type: boolean, example: true }
- *                 message: { type: string, example: Todo updated successfully }
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: Todo updated successfully
  *                 data:
  *                   $ref: '#/components/schemas/Todo'
  *       400:
@@ -209,7 +255,7 @@ router.get("/:id", getTodoByIdRules, validate, todoController.getTodoById);
  *         description: Todo tidak ditemukan
  */
 router.put("/:id", updateTodoRules, validate, todoController.updateTodo);
- 
+
 /**
  * @swagger
  * /api/todos/{id}:
@@ -233,8 +279,12 @@ router.put("/:id", updateTodoRules, validate, todoController.updateTodo);
  *             schema:
  *               type: object
  *               properties:
- *                 success: { type: boolean, example: true }
- *                 message: { type: string, example: Todo deleted successfully }
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: Todo deleted successfully
  *                 data:
  *                   $ref: '#/components/schemas/Todo'
  *       400:
@@ -247,5 +297,5 @@ router.put("/:id", updateTodoRules, validate, todoController.updateTodo);
  *         description: Todo tidak ditemukan
  */
 router.delete("/:id", getTodoByIdRules, validate, todoController.deleteTodo);
- 
+
 module.exports = router;

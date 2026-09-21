@@ -16,7 +16,9 @@ const createTodoRules = [
 ];
 
 const updateTodoRules = [
-  param("id").isMongoId().withMessage("Invalid todo ID format"),
+  param("id")
+    .isMongoId()
+    .withMessage("Invalid todo ID format"),
 
   body("title")
     .optional()
@@ -34,9 +36,18 @@ const updateTodoRules = [
     .optional()
     .isBoolean()
     .withMessage("Completed must be true or false"),
+
+  body("archived")
+    .optional()
+    .isBoolean()
+    .withMessage("Archived must be true or false"),
 ];
 
-const getTodoByIdRules = [param("id").isMongoId().withMessage("Invalid todo ID format")];
+const getTodoByIdRules = [
+  param("id")
+    .isMongoId()
+    .withMessage("Invalid todo ID format"),
+];
 
 const getAllTodosRules = [
   query("page")
@@ -63,6 +74,12 @@ const getAllTodosRules = [
     .optional()
     .isIn(["asc", "desc"])
     .withMessage("order must be 'asc' or 'desc'"),
+
+  query("search")
+    .optional()
+    .trim()
+    .isLength({ min: 1, max: 100 })
+    .withMessage("Search must be between 1 and 100 characters"),
 ];
 
 module.exports = {

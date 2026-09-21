@@ -14,7 +14,7 @@ const options = {
     servers: [
       {
         url: "https://listi-rho.vercel.app",
-        description: "Local development server",
+        description: "Production server",
       },
     ],
 
@@ -62,6 +62,21 @@ const options = {
               example: "665f1a2b8b1e2a1a2c3d1111",
             },
 
+            created_by: {
+              type: "string",
+              example: "665f1a2b8b1e2a1a2c3d1111",
+            },
+
+            updated_by: {
+              type: "string",
+              example: "665f1a2b8b1e2a1a2c3d1111",
+            },
+
+            archived: {
+              type: "boolean",
+              example: false,
+            },
+
             createdAt: {
               type: "string",
               format: "date-time",
@@ -77,7 +92,8 @@ const options = {
     },
   },
 
-  // Swagger akan mencari komentar dokumentasi di semua file route
+  // Swagger mencari komentar dokumentasi
+  // di semua file yang ada di folder routes
   apis: ["./src/routes/*.js"],
 };
 
