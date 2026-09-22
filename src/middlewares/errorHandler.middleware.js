@@ -6,7 +6,9 @@ const errorHandler = (err, req, res, next) => {
   if (err.name === "ValidationError") {
     statusCode = 400;
 
-    const errors = Object.values(err.errors).map((error) => error.message);
+    const errors = Object.values(err.errors).map(
+      (error) => error.message
+    );
 
     message = errors.join(", ");
   }
@@ -31,8 +33,12 @@ const errorHandler = (err, req, res, next) => {
     message,
   };
 
-  // Stack hanya ditampilkan saat development
-  if (process.env.NODE_ENV === "development") {
+  // Stack hanya ditampilkan saat development lokal.
+  // Vercel tidak boleh mengirim stack ke client.
+  if (
+    process.env.NODE_ENV === "development" &&
+    process.env.VERCEL !== "1"
+  ) {
     response.stack = err.stack;
   }
 
