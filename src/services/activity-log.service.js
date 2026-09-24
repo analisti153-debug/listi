@@ -6,6 +6,7 @@ async function createActivityLog(data) {
     entity: data.entity || "Todo",
     entityId: data.entityId,
     user: data.user,
+    snapshot: data.snapshot || null,
   });
 }
 

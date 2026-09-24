@@ -3,15 +3,19 @@ const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/AppError");
 
 const createCategory = catchAsync(async (req, res, next) => {
-  const { name, description } = req.body;
+  const { name, description, archived } = req.body;
 
   if (!name) {
     return next(new AppError("Category name is required", 400));
   }
 
+  const userId = req.user._id || req.user.id;
+
   const category = await categoryService.createCategory({
     name,
     description,
+    archived,
+    userId,
   });
 
   res.status(201).json({
@@ -46,10 +50,16 @@ const getCategoryById = catchAsync(async (req, res, next) => {
 });
 
 const updateCategory = catchAsync(async (req, res, next) => {
-  const category = await categoryService.updateCategory(
-    req.params.id,
-    req.body
-  );
+  const { name, description, archived } = req.body;
+
+  const userId = req.user._id || req.user.id;
+
+  const category = await categoryService.updateCategory(req.params.id, {
+    name,
+    description,
+    archived,
+    userId,
+  });
 
   if (!category) {
     return next(new AppError("Category not found", 404));

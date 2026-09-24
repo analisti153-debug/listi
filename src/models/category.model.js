@@ -8,10 +8,22 @@ const categorySchema = new mongoose.Schema(
       trim: true,
       unique: true,
     },
+
     description: {
       type: String,
       trim: true,
       default: "",
+    },
+
+    updated_by: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: false,
+    },
+
+    archived: {
+      type: Boolean,
+      default: false,
     },
   },
   {

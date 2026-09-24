@@ -23,6 +23,11 @@ const activityLogSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+
+    snapshot: {
+      type: mongoose.Schema.Types.Mixed,
+      default: null,
+    },
   },
   {
     timestamps: true,

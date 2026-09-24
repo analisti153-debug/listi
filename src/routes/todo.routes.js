@@ -36,6 +36,16 @@ router.use(protect);
  *               description:
  *                 type: string
  *                 example: Menulis dokumentasi endpoint todo
+ *               category:
+ *                 type: string
+ *                 description: ID category todo
+ *                 example: 665f1c2e8b1e2a1a2c3d4e5f
+ *               completed:
+ *                 type: boolean
+ *                 example: false
+ *               archived:
+ *                 type: boolean
+ *                 example: false
  *     responses:
  *       201:
  *         description: Todo berhasil dibuat
@@ -226,6 +236,10 @@ router.get("/:id", getTodoByIdRules, validate, todoController.getTodoById);
  *               completed:
  *                 type: boolean
  *                 example: true
+ *               category:
+ *                 type: string
+ *                 description: ID category todo
+ *                 example: 665f1c2e8b1e2a1a2c3d4e5f
  *               archived:
  *                 type: boolean
  *                 example: false

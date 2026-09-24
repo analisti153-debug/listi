@@ -19,7 +19,10 @@ const todoSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-
+    category: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Category",
+    },
     owner: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",

@@ -57,6 +57,22 @@ const options = {
               example: false,
             },
 
+            category: {
+              type: "object",
+              nullable: true,
+              properties: {
+                _id: {
+                  type: "string",
+                  example: "665f1c2e8b1e2a1a2c3d4e5f",
+                },
+
+                name: {
+                  type: "string",
+                  example: "Pekerjaan",
+                },
+              },
+            },
+
             owner: {
               type: "string",
               example: "665f1a2b8b1e2a1a2c3d1111",
@@ -83,6 +99,47 @@ const options = {
             },
 
             updatedAt: {
+              type: "string",
+              format: "date-time",
+            },
+          },
+        },
+
+        Category: {
+          type: "object",
+          properties: {
+            _id: {
+              type: "string",
+              example: "665f1c2e8b1e2a1a2c3d4e5f",
+            },
+
+            name: {
+              type: "string",
+              example: "Belajar",
+            },
+
+            description: {
+              type: "string",
+              example: "Kategori untuk kegiatan belajar",
+            },
+
+            updated_by: {
+              type: "string",
+              nullable: true,
+              example: "665f1a2b8b1e2a1a2c3d1111",
+            },
+
+            archived: {
+              type: "boolean",
+              example: false,
+            },
+
+            created_at: {
+              type: "string",
+              format: "date-time",
+            },
+
+            updated_at: {
               type: "string",
               format: "date-time",
             },

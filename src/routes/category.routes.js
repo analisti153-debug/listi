@@ -37,6 +37,9 @@ router.use(protect);
  *               description:
  *                 type: string
  *                 example: Kategori untuk kegiatan belajar
+ *               archived:
+ *                 type: boolean
+ *                 example: false
  *     responses:
  *       201:
  *         description: Kategori berhasil dibuat
@@ -116,6 +119,9 @@ router.get("/:id", categoryController.getCategoryById);
  *               description:
  *                 type: string
  *                 example: Kategori tugas sekolah
+ *               archived:
+ *                 type: boolean
+ *                 example: false
  *     responses:
  *       200:
  *         description: Kategori berhasil diperbarui

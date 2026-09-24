@@ -3,13 +3,22 @@ const AppError = require("../utils/AppError");
 const catchAsync = require("../utils/catchAsync");
 
 const createTodo = catchAsync(async (req, res, next) => {
-  const { title, description } = req.body;
+  const {
+    title,
+    description,
+    category,
+    completed,
+    archived,
+  } = req.body;
 
   const userId = req.user._id || req.user.id;
 
   const todo = await todoService.createTodo({
     title,
     description,
+    category,
+    completed,
+    archived,
     owner: userId,
     userId: userId,
   });
@@ -20,7 +29,6 @@ const createTodo = catchAsync(async (req, res, next) => {
     data: todo,
   });
 });
-
 const getAllTodos = catchAsync(async (req, res, next) => {
   const {
     page,
@@ -93,6 +101,7 @@ const updateTodo = catchAsync(async (req, res, next) => {
     title,
     description,
     completed,
+    category,
     archived,
   } = req.body;
 
@@ -121,8 +130,9 @@ const updateTodo = catchAsync(async (req, res, next) => {
     title,
     description,
     completed,
+    category,
     archived,
-    userId: userId,
+    userId,
   });
 
   res.status(200).json({

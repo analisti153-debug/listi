@@ -4,6 +4,8 @@ async function createCategory(data) {
   return await Category.create({
     name: data.name,
     description: data.description,
+    updated_by: data.userId,
+    archived: data.archived ?? false,
   });
 }
 
@@ -16,12 +18,19 @@ async function getCategoryById(id) {
 }
 
 async function updateCategory(id, data) {
+  const updateData = {
+    name: data.name,
+    description: data.description,
+    updated_by: data.userId,
+  };
+
+  if (data.archived !== undefined) {
+    updateData.archived = data.archived;
+  }
+
   return await Category.findByIdAndUpdate(
     id,
-    {
-      name: data.name,
-      description: data.description,
-    },
+    updateData,
     {
       new: true,
       runValidators: true,
